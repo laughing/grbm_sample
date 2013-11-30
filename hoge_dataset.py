@@ -17,7 +17,7 @@ from pylearn2.datasets.dense_design_matrix import DefaultViewConverter
 from pylearn2.datasets.dense_design_matrix import DenseDesignMatrix
 from pylearn2.utils.string_utils import preprocess
 
-class EmotionsDataset(DenseDesignMatrix):
+class HogeDataset(DenseDesignMatrix):
     """
     A Pylearn2 Dataset class for accessing the data for the
     facial expression recognition Kaggle contest for the ICML
@@ -25,7 +25,7 @@ class EmotionsDataset(DenseDesignMatrix):
     """
 
     def __init__(self, which_set,
-            base_path = '${PYLEARN2_DATA_PATH}/icml_2013_emotions',
+            base_path = '${PYLEARN2_DATA_PATH}/hoge',
             start = None,
             stop = None,
             preprocessor = None,
@@ -79,7 +79,7 @@ class EmotionsDataset(DenseDesignMatrix):
 
         view_converter = DefaultViewConverter(shape=[48,48,1], axes=axes)
 
-        super(EmotionsDataset, self).__init__(X=X, y=y, view_converter=view_converter)
+        super(HogeDataset, self).__init__(X=X, y=y, view_converter=view_converter)
 
         if preprocessor:
             preprocessor.apply(self, can_fit=fit_preprocessor)

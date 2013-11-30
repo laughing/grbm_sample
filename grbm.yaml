@@ -20,18 +20,19 @@
 !obj:pylearn2.train.Train {
     # The !pkl tag is used to create an object from a pkl file. Here we retrieve
     # the dataset made by make_dataset.py and use it as our training dataset.
-    dataset: !pkl: "cifar10_preprocessed_train.pkl",
-
+    dataset: &data !obj:pylearn2.datasets.hoge_dataset.HogeDataset {
+            which_set: "train",
+        },
     # Next we make the model to be trained. It is a Binary Gaussian RBM
     model: !obj:pylearn2.models.rbm.GaussianBinaryRBM {
 
         # The RBM needs 192 visible units (its inputs are 8x8 patches with 3
         # color channels)
-        nvis : 192,
+        nvis : 2304,
 
         # We'll use 400 hidden units for this RBM. That's a small number but we
         # want this example script to train quickly.
-        nhid : 400,
+        nhid : 80,
 
         # The elements of the weight matrices of the RBM will be drawn
         # independently from U(-0.05, 0.05)
@@ -80,15 +81,15 @@
         learning_rate : 1e-1,
 
         # Each gradient step will be based on this many examples
-        batch_size : 5,
+        batch_size : 16,
 
         # We'll monitor our progress by looking at the first 20 batches of the
         # training dataset. This is an estimate of the training error. To be
         # really exhaustive, we could use the entire training set instead,
         # or to avoid overfitting, we could use held out data instead.
-        monitoring_batches : 20,
+        monitoring_batches : 1,
 
-        monitoring_dataset : !pkl: "cifar10_preprocessed_train.pkl",
+        monitoring_dataset : *data,
 
         # Here we specify the objective function that stochastic gradient
         # descent should minimize.  In this case we use denoising score
@@ -119,9 +120,9 @@
 
         termination_criterion : !obj:pylearn2.termination_criteria.MonitorBased {
             prop_decrease : 0.01,
-            N : 1,
+            N : 1000,
         },
-
+        
         # Let's throw a learning rate adjuster into the training algorithm.
         # To do this we'll use an "extension," which is basically an event
         # handler that can be registered with the Train object.
